@@ -1,0 +1,56 @@
+// const { MongoClient } = require("mongodb");
+
+// // Connection URL
+// const url = "mongodb://localhost:27017";
+// const client = new MongoClient(url);
+
+// // Database Name
+// const dbName = "login";
+
+// async function main() {
+//   // Use connect method to connect to the server
+//   await client.connect();
+//   console.log("Connected successfully to server");
+//   const db = client.db(dbName);
+//   const collection = db.collection("users");
+
+//   // the following code examples can be pasted here...
+
+//   return "done.";
+// }
+
+// main()
+//   .then(console.log)
+//   .catch(console.error)
+//   .finally(() => client.close());
+
+//********mongoose*****
+
+const mongoose =require('mongoose')
+mongoose.connect("mongodb://localhost:27017/login");
+const userSchema=new mongoose.Schema({
+    name:String,
+    phone:Number,
+    email:String,
+    passward:String
+  });
+const SaveDataInDB =async ()=>{
+  
+  const Users = mongoose.model("users", userSchema);
+  let data = new Users({name:"vishnu",phone:9454935385,email:"vishnu@gmail.com",passward:1234,role:"Admin"});
+  const result= await data.save();
+  console.log(result)
+  
+}
+
+const UpdatedataInDB= async()=>{
+  const Users=mongoose.model('users',userSchema);
+  let data =await Users.updateOne({name:"vishnu"},{$set:{passward:9876}})
+  console.log(data);
+}
+
+const findInDB=async()=>{
+   const Users = mongoose.model("users", userSchema);
+     let data = await Users.find({ passward: 9876 });
+     console.log(data);
+}
